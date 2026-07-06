@@ -20,3 +20,8 @@ export interface JwtPayload {
     email: string;
     role: Role;
 }
+
+export interface ICreateCategory {
+    name: string;
+    description?: string;
+}

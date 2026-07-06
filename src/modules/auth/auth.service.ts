@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
-import { ILoginPayload, IResisterPayload, JwtPayload } from "../types";
-import config from "../config";
-import { prisma } from "../lib/prisma";
-import { signToken, verifyToken } from "../utils/jwt";
+import { ILoginPayload, IResisterPayload, JwtPayload } from "../../types";
+import config from "../../config";
+import { prisma } from "../../lib/prisma";
+import { signToken, verifyToken } from "../../utils/jwt";
 
 class AuthService {
     private async hashPassword(password: string) {
