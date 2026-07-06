@@ -14,11 +14,11 @@ type TResponseData<T> = {
     meta?: TMeta;
 };
 
-export const sendResponse = <T>(res: Response, data: TResponseData<T>) => {
+export function sendResponse<T>(res: Response, data: TResponseData<T>) {
     res.status(data.status).json({
         success: data.success,
         statusCode: data.status,
         message: data.message,
         data: data.data,
     });
-};
+}
