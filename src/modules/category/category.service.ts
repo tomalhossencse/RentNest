@@ -9,6 +9,11 @@ class CategoryService {
 
         return category;
     }
+
+    async getAllCategory() {
+        const categories = await prisma.category.findMany();
+        return categories;
+    }
 }
 
 export default new CategoryService();
