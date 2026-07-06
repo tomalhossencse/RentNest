@@ -4,6 +4,7 @@ import {
     PropertyStatus,
     Role,
 } from "../../generated/prisma/enums";
+import { PropertyWhereInput } from "../../generated/prisma/models";
 
 export interface IResisterPayload {
     name: string;
@@ -43,4 +44,12 @@ export interface ICreatePropery {
     floor: number;
     image?: string;
     availableFrom: string;
+}
+
+export interface IPropertyQuery extends PropertyWhereInput {
+    searchTerm?: string;
+    page?: string;
+    limit?: string;
+    sortBy?: string;
+    sortOrder?: string;
 }
