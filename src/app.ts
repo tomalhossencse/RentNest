@@ -26,7 +26,6 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/auth", authRoutes);
 
 app.use(notFound);
-
 app.use(globalErrorHandler);
 
 export default app;

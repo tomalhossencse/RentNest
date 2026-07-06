@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import authService from "./auth.service";
 import { catchAsync } from "../utils/catchAsync";
-import { IResisterPayload } from "../interface";
+import { ILoginPayload, IResisterPayload } from "../interface";
 import { sendResponse } from "../utils/sendResponse";
 import httpStatus from "http-status";
 
@@ -22,4 +22,33 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-export const authController = { registerUser };
+const loginUser = catchAsync(async (req: Request, res: Response) => {
+    const { email, password } = req.body as ILoginPayload;
+
+    if (!email || !password) {
+        throw new Error("Please Provide your email and password !");
+    }
+
+    const { accessToken, user } = await authService.loginUserFromDb({
+        email,
+        password,
+    });
+
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60,
+    });
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "User logged in successfully",
+        data: {
+            accessToken,
+        },
+    });
+});
+
+export const authController = { registerUser, loginUser };

@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs";
-import { IResisterPayload } from "../interface";
+import { ILoginPayload, IResisterPayload } from "../interface";
 import config from "../config";
 import { prisma } from "../lib/prisma";
+import { signToken } from "../utils/jwt";
 
 class AuthService {
     private async hashPassword(password: string) {
@@ -11,6 +12,12 @@ class AuthService {
         );
         return hashedPassword;
     }
+
+    private async comparePassword(password: string, hashedPassword: string) {
+        const isMatchPassword = await bcrypt.compare(password, hashedPassword);
+        return isMatchPassword;
+    }
+
     async createUserIntoDB(payload: IResisterPayload) {
         const { password, email, name, bio, profilePhoto, role } = payload;
 
@@ -41,6 +48,43 @@ class AuthService {
         });
 
         return user;
+    }
+
+    async loginUserFromDb(payload: ILoginPayload) {
+        const { email, password } = payload;
+
+        const user = await prisma.user.findUnique({
+            where: {
+                email,
+            },
+        });
+
+        if (!user) {
+            throw new Error("User  with this email  not exits!");
+        }
+
+        const isPasswordMatch = await this.comparePassword(
+            password,
+            user.password,
+        );
+
+        if (!isPasswordMatch) {
+            throw new Error("Your password is incorrect!");
+        }
+
+        const jwtPayload = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        };
+
+        const { accessToken } = signToken(jwtPayload);
+
+        return {
+            accessToken,
+            user,
+        };
     }
 }
 
