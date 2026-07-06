@@ -1,4 +1,9 @@
-import { Role } from "../../generated/prisma/enums";
+import {
+    District,
+    Division,
+    PropertyStatus,
+    Role,
+} from "../../generated/prisma/enums";
 
 export interface IResisterPayload {
     name: string;
@@ -24,4 +29,18 @@ export interface JwtPayload {
 export interface ICreateCategory {
     name: string;
     description?: string;
+}
+
+export interface ICreatePropery {
+    title: string;
+    description?: string;
+    monthlyRent: number;
+    division: Division;
+    district: District;
+    address: string;
+    categoryId: string;
+    status: PropertyStatus;
+    floor: number;
+    image?: string;
+    availableFrom: string;
 }
