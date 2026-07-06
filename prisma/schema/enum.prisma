@@ -1,0 +1,11 @@
+enum UserStatus {
+    ACTIVE
+    BLOCKED
+    DELETED
+}
+
+enum Role {
+    ADMIN
+    LANDLORD
+    TENANT
+}
