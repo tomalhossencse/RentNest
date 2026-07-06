@@ -1,6 +1,6 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
 
-export function catchAsync(fn: RequestHandler) {
+export const catchAsync = (fn: RequestHandler) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             await fn(req, res, next);
@@ -8,4 +8,4 @@ export function catchAsync(fn: RequestHandler) {
             next(error);
         }
     };
-}
+};
