@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import authService from "./auth.service";
 import { catchAsync } from "../utils/catchAsync";
-import { ILoginPayload, IResisterPayload } from "../interface";
+import { ILoginPayload, IResisterPayload } from "../types";
 import { sendResponse } from "../utils/sendResponse";
 import httpStatus from "http-status";
+import { send } from "node:process";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
     const { email, name, password } = req.body as IResisterPayload;
@@ -51,4 +52,14 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-export const authController = { registerUser, loginUser };
+const getCurrentUser = catchAsync(async (req: Request, res: Response) => {
+    const result = await authService.getCurrentUser(req.user.id);
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "user profile retrived successfully",
+        data: result,
+    });
+});
+
+export const authController = { registerUser, loginUser, getCurrentUser };

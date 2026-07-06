@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { ILoginPayload, IResisterPayload } from "../interface";
+import { ILoginPayload, IResisterPayload, JwtPayload } from "../types";
 import config from "../config";
 import { prisma } from "../lib/prisma";
 import { signToken } from "../utils/jwt";
@@ -63,6 +63,12 @@ class AuthService {
             throw new Error("User  with this email  not exits!");
         }
 
+        if (user.status === "BLOCKED") {
+            throw new Error(
+                "Your account has been blocked.Please contact for support!",
+            );
+        }
+
         const isPasswordMatch = await this.comparePassword(
             password,
             user.password,
@@ -85,6 +91,19 @@ class AuthService {
             accessToken,
             user,
         };
+    }
+
+    async getCurrentUser(userId: string) {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            omit: {
+                password: true,
+            },
+        });
+
+        return user;
     }
 }
 
