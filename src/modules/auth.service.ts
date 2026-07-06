@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { ILoginPayload, IResisterPayload, JwtPayload } from "../types";
 import config from "../config";
 import { prisma } from "../lib/prisma";
-import { signToken } from "../utils/jwt";
+import { signToken, verifyToken } from "../utils/jwt";
 
 class AuthService {
     private async hashPassword(password: string) {
@@ -85,10 +85,11 @@ class AuthService {
             role: user.role,
         };
 
-        const { accessToken } = signToken(jwtPayload);
+        const { accessToken, refreshToken } = signToken(jwtPayload);
 
         return {
             accessToken,
+            refreshToken,
             user,
         };
     }
@@ -104,6 +105,40 @@ class AuthService {
         });
 
         return user;
+    }
+
+    async refreshToken(refreshToken: string) {
+        const verfiedRefreshToken = verifyToken(
+            refreshToken,
+            "refresh",
+        ) as JwtPayload;
+
+        if (!verfiedRefreshToken) {
+            throw new Error("Invalid refresh token");
+        }
+
+        const user = await prisma.user.findUniqueOrThrow({
+            where: {
+                id: verfiedRefreshToken.id,
+            },
+        });
+
+        if (user.status === "BLOCKED") {
+            throw new Error(
+                "Your account has been blocked.Please contact for support!",
+            );
+        }
+
+        const jwtPayload = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        };
+
+        const { accessToken } = signToken(jwtPayload);
+
+        return { accessToken };
     }
 }
 

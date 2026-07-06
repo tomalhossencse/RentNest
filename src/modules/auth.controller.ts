@@ -30,16 +30,24 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
         throw new Error("Please Provide your email and password !");
     }
 
-    const { accessToken, user } = await authService.loginUserFromDb({
-        email,
-        password,
-    });
+    const { accessToken, refreshToken, user } =
+        await authService.loginUserFromDb({
+            email,
+            password,
+        });
 
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: false,
         sameSite: "none",
         maxAge: 1000 * 60 * 60,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
     sendResponse(res, {
@@ -62,4 +70,29 @@ const getCurrentUser = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-export const authController = { registerUser, loginUser, getCurrentUser };
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
+    const refreshToken = req.cookies?.refreshToken;
+
+    const { accessToken } = await authService.refreshToken(refreshToken);
+
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60,
+    });
+
+    return sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Token refreshed successfully",
+        data: { accessToken },
+    });
+});
+
+export const authController = {
+    registerUser,
+    loginUser,
+    getCurrentUser,
+    refreshToken,
+};
