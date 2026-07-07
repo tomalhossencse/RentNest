@@ -6,5 +6,6 @@ const propertyRoutes = Router();
 
 propertyRoutes.post("/", auth("LANDLORD"), propertyController.addProperty);
 propertyRoutes.get("/", propertyController.getAllPropery);
+propertyRoutes.get("/:id", propertyController.getProperyDetails);
 
 export default propertyRoutes;

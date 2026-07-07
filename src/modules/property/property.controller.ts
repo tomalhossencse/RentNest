@@ -59,4 +59,25 @@ const getAllPropery = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-export const propertyController = { addProperty, getAllPropery };
+const getProperyDetails = catchAsync(async (req: Request, res: Response) => {
+    const propertyId = req.params.id;
+    if (!propertyId) {
+        throw new Error("propertyId is Required in params");
+    }
+    const result = await propertyService.getPropertyDetails(
+        propertyId as string,
+    );
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Property Retrived  successfully",
+        data: result,
+    });
+});
+
+export const propertyController = {
+    addProperty,
+    getAllPropery,
+    getProperyDetails,
+};

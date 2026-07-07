@@ -87,10 +87,14 @@ class PropertyService {
             orderBy: {
                 [sortBy]: sortOrder,
             },
+            omit: {
+                description: true,
+                landlordId: true,
+                categoryId: true,
+            },
             include: {
                 lanlord: {
                     select: {
-                        id: true,
                         name: true,
                         email: true,
                     },
@@ -118,6 +122,35 @@ class PropertyService {
                 totalPages: Math.ceil(totalPropertyCount / limit),
             },
         };
+    }
+
+    async getPropertyDetails(propertyId: string) {
+        const property = await prisma.property.findUnique({
+            where: {
+                id: propertyId,
+            },
+            include: {
+                lanlord: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
+
+        if (!property) {
+            throw new Error("This Propery is not Exits");
+        }
+
+        return property;
     }
 }
 
