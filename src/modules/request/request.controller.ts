@@ -39,7 +39,32 @@ const getRequestforLandLord = catchAsync(
     },
 );
 
+const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
+    const requestId = req.params.id;
+    const landlordId = req.user.id;
+    const isAdmin = req.user.role === "ADMIN";
+    const { status } = req.body;
+
+    if (!requestId || !status) {
+        throw new Error("Please provide requestId and status");
+    }
+
+    const result = await requestService.updateRequestStatus(
+        requestId as string,
+        landlordId,
+        isAdmin,
+        status,
+    );
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Rental request status updated successfully",
+        data: result,
+    });
+});
+
 export const requestController = {
     createRequest,
     getRequestforLandLord,
+    updateRequestStatus,
 };

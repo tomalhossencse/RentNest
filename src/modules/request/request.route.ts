@@ -14,5 +14,10 @@ requestRoutes.get(
     auth("LANDLORD", "ADMIN"),
     requestController.getRequestforLandLord,
 );
+requestRoutes.put(
+    "/:id/landlord",
+    auth("LANDLORD", "ADMIN"),
+    requestController.updateRequestStatus,
+);
 
 export default requestRoutes;
