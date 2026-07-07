@@ -90,9 +90,20 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+    const result = await authService.getAllUsers();
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "All users retrived successfully",
+        data: result,
+    });
+});
+
 export const authController = {
     registerUser,
     loginUser,
     getCurrentUser,
     refreshToken,
+    getAllUsers,
 };

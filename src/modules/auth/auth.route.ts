@@ -8,5 +8,6 @@ authRoutes.post("/register", authController.registerUser);
 authRoutes.post("/login", authController.loginUser);
 authRoutes.post("/refresh-token", authController.refreshToken);
 authRoutes.get("/me", auth(), authController.getCurrentUser);
+authRoutes.get("/users", auth("ADMIN"), authController.getAllUsers);
 
 export default authRoutes;

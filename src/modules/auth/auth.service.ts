@@ -140,6 +140,15 @@ class AuthService {
 
         return { accessToken };
     }
+
+    async getAllUsers() {
+        const users = await prisma.user.findMany({
+            omit: {
+                password: true,
+            },
+        });
+        return users;
+    }
 }
 
 export default new AuthService();
