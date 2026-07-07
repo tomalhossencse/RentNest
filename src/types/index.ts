@@ -45,6 +45,19 @@ export interface ICreatePropery {
     image?: string;
     availableFrom: string;
 }
+export interface IUpdatePropery {
+    title?: string;
+    description?: string;
+    monthlyRent?: number;
+    division?: Division;
+    district?: District;
+    address?: string;
+    categoryId?: string;
+    status?: PropertyStatus;
+    floor?: number;
+    image?: string;
+    availableFrom?: string;
+}
 
 export interface IPropertyQuery extends PropertyWhereInput {
     searchTerm?: string;

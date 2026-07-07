@@ -1,7 +1,7 @@
 import { District } from "../../../generated/prisma/enums";
 import { PropertyWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
-import { ICreatePropery, IPropertyQuery } from "../../types";
+import { ICreatePropery, IPropertyQuery, IUpdatePropery } from "../../types";
 
 class PropertyService {
     async addProperty(payload: ICreatePropery, landlordId: string) {
@@ -151,6 +151,50 @@ class PropertyService {
         }
 
         return property;
+    }
+
+    async updateProperty(
+        propertyId: string,
+        landlordId: string,
+        isAdmin: Boolean,
+        updatedpayload: IUpdatePropery,
+    ) {
+        const property = await prisma.property.findUnique({
+            where: {
+                id: propertyId,
+            },
+        });
+
+        if (!property) {
+            throw new Error("This Propery is not Exits");
+        }
+
+        if (!isAdmin && landlordId !== property.landlordId) {
+            throw new Error("You are not the ower of this Property");
+        }
+        const updatedproperty = await prisma.property.update({
+            where: {
+                id: propertyId,
+            },
+            data: updatedpayload,
+            include: {
+                lanlord: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
+
+        return updatedproperty;
     }
 }
 

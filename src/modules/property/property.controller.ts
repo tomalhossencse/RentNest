@@ -76,8 +76,36 @@ const getProperyDetails = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const updateProperty = catchAsync(async (req: Request, res: Response) => {
+    const updatedpayload = req.body;
+    const propertyId = req.params.id;
+    const landlordId = req.user.id;
+    const isAdmin = req.user.role === "ADMIN";
+
+    if (!updatedpayload || !propertyId) {
+        throw new Error(
+            "Please enter update docs in body and propetyId in params",
+        );
+    }
+
+    const result = await propertyService.updateProperty(
+        propertyId as string,
+        landlordId,
+        isAdmin,
+        updatedpayload,
+    );
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Property updated  successfully",
+        data: result,
+    });
+});
+
 export const propertyController = {
     addProperty,
     getAllPropery,
     getProperyDetails,
+    updateProperty,
 };
