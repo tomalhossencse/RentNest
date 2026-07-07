@@ -196,6 +196,47 @@ class PropertyService {
 
         return updatedproperty;
     }
+    async deleteProperty(
+        propertyId: string,
+        landlordId: string,
+        isAdmin: Boolean,
+    ) {
+        const property = await prisma.property.findUnique({
+            where: {
+                id: propertyId,
+            },
+        });
+
+        if (!property) {
+            throw new Error("This Propery is not Exits");
+        }
+
+        if (!isAdmin && landlordId !== property.landlordId) {
+            throw new Error("You are not the ower of this Property");
+        }
+        const deletedproperty = await prisma.property.delete({
+            where: {
+                id: propertyId,
+            },
+            include: {
+                lanlord: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
+
+        return deletedproperty;
+    }
 }
 
 export default new PropertyService();

@@ -12,5 +12,10 @@ propertyRoutes.put(
     auth("LANDLORD", "ADMIN"),
     propertyController.updateProperty,
 );
+propertyRoutes.delete(
+    "/:id",
+    auth("LANDLORD", "ADMIN"),
+    propertyController.deleteProperty,
+);
 
 export default propertyRoutes;

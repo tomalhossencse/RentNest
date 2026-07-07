@@ -102,10 +102,33 @@ const updateProperty = catchAsync(async (req: Request, res: Response) => {
         data: result,
     });
 });
+const deleteProperty = catchAsync(async (req: Request, res: Response) => {
+    const propertyId = req.params.id;
+    const landlordId = req.user.id;
+    const isAdmin = req.user.role === "ADMIN";
+
+    if (!propertyId) {
+        throw new Error("Please enter the propetyId in params");
+    }
+
+    const result = await propertyService.deleteProperty(
+        propertyId as string,
+        landlordId,
+        isAdmin,
+    );
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Property deleted  successfully",
+        data: result,
+    });
+});
 
 export const propertyController = {
     addProperty,
     getAllPropery,
     getProperyDetails,
     updateProperty,
+    deleteProperty,
 };
