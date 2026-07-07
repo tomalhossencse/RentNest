@@ -24,6 +24,22 @@ const createRequest = catchAsync(async (req: Request, res: Response) => {
         data: result,
     });
 });
+
+const getRequestforLandLord = catchAsync(
+    async (req: Request, res: Response) => {
+        const landlordId = req.user.id;
+        const result = await requestService.getRequestforLandLord(landlordId);
+        sendResponse(res, {
+            success: true,
+            status: httpStatus.OK,
+            message:
+                "Rental request for landlord Properties Retrived  successfully",
+            data: result,
+        });
+    },
+);
+
 export const requestController = {
     createRequest,
+    getRequestforLandLord,
 };

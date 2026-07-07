@@ -31,6 +31,48 @@ class RequestService {
 
         return request;
     }
+
+    async getRequestforLandLord(landlordId: string) {
+        const requests = await prisma.request.findMany({
+            where: {
+                property: {
+                    landlordId,
+                },
+            },
+            include: {
+                tenant: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+
+                property: {
+                    select: {
+                        id: true,
+                        title: true,
+                        division: true,
+                        district: true,
+                        lanlord: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                            },
+                        },
+                        category: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        return requests;
+    }
 }
 
 export default new RequestService();
