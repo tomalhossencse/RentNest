@@ -25,7 +25,7 @@ requestRoutes.patch(
 requestRoutes.get(
     "/tenant",
     auth("TENANT", "ADMIN"),
-    requestController.getRequestforTenant,
+    requestController.getRequestForTenant,
 );
 
 requestRoutes.get(
@@ -33,5 +33,7 @@ requestRoutes.get(
     auth("TENANT", "LANDLORD", "ADMIN"),
     requestController.getRequestDetails,
 );
+
+requestRoutes.get("/", auth("ADMIN"), requestController.getAllRequestForAdmin);
 
 export default requestRoutes;

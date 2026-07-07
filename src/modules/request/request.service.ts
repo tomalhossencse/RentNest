@@ -1,6 +1,7 @@
 import { RequestStatus } from "../../../generated/prisma/enums";
+import { RequestWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
-import { ICreateRequest } from "../../types";
+import { ICreateRequest, IReqeustQuery } from "../../types";
 
 class RequestService {
     async createRequest(tenantId: string, payload: ICreateRequest) {
@@ -127,6 +128,63 @@ class RequestService {
         });
 
         return requests;
+    }
+
+    async getAllRequestforAdmin(query: IReqeustQuery) {
+        const limit = query.limit ? Number(query.limit) : 5;
+        const page = query.page ? Number(query.page) : 1;
+        const skip = (page - 1) * limit;
+        const sortBy = query.sortBy ? query.sortBy : "createdAt";
+        const sortOrder = query.sortOrder ? query.sortOrder : "desc";
+
+        const andConditions: RequestWhereInput[] = [];
+
+        if (query.status) {
+            andConditions.push({
+                status: query.status,
+            });
+        }
+
+        if (query.propertyId) {
+            andConditions.push({
+                propertyId: query.propertyId,
+            });
+        }
+
+        if (query.tenantId) {
+            andConditions.push({
+                tenantId: query.tenantId,
+            });
+        }
+
+        const requests = await prisma.request.findMany({
+            where: {
+                AND: andConditions,
+            },
+
+            take: limit,
+            skip,
+
+            orderBy: {
+                [sortBy]: sortOrder,
+            },
+        });
+
+        const totalRequestCount = await prisma.request.count({
+            where: {
+                AND: andConditions,
+            },
+        });
+
+        return {
+            data: requests,
+            meta: {
+                limit,
+                page,
+                total: totalRequestCount,
+                totalPages: Math.ceil(totalRequestCount / limit),
+            },
+        };
     }
 }
 

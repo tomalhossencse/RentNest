@@ -5,7 +5,10 @@ import {
     RequestStatus,
     Role,
 } from "../../generated/prisma/enums";
-import { PropertyWhereInput } from "../../generated/prisma/models";
+import {
+    PropertyWhereInput,
+    RequestWhereInput,
+} from "../../generated/prisma/models";
 
 export interface IResisterPayload {
     name: string;
@@ -62,6 +65,13 @@ export interface IUpdatePropery {
 
 export interface IPropertyQuery extends PropertyWhereInput {
     searchTerm?: string;
+    page?: string;
+    limit?: string;
+    sortBy?: string;
+    sortOrder?: string;
+}
+
+export interface IReqeustQuery extends RequestWhereInput {
     page?: string;
     limit?: string;
     sortBy?: string;
