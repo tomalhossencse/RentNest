@@ -9,25 +9,6 @@ class RequestService {
                 tenantId,
                 ...payload,
             },
-            include: {
-                tenant: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                    },
-                },
-
-                property: {
-                    select: {
-                        id: true,
-                        title: true,
-                        category: true,
-                        division: true,
-                        district: true,
-                    },
-                },
-            },
         });
 
         return request;
@@ -38,36 +19,6 @@ class RequestService {
             where: {
                 property: {
                     landlordId,
-                },
-            },
-            include: {
-                tenant: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                    },
-                },
-
-                property: {
-                    select: {
-                        id: true,
-                        title: true,
-                        division: true,
-                        district: true,
-                        lanlord: {
-                            select: {
-                                id: true,
-                                name: true,
-                                email: true,
-                            },
-                        },
-                        category: {
-                            select: {
-                                name: true,
-                            },
-                        },
-                    },
                 },
             },
         });
@@ -109,6 +60,20 @@ class RequestService {
             data: {
                 status,
             },
+        });
+
+        return updatedRequest;
+    }
+
+    async getRequestDetails(
+        requestId: string,
+        userId: string,
+        isAdmin: boolean,
+    ) {
+        const request = await prisma.request.findUnique({
+            where: {
+                id: requestId,
+            },
             include: {
                 tenant: {
                     select: {
@@ -141,7 +106,17 @@ class RequestService {
             },
         });
 
-        return updatedRequest;
+        if (
+            !isAdmin &&
+            request?.tenantId !== userId &&
+            request?.property.lanlord.id !== userId
+        ) {
+            throw new Error(
+                "You are not authorized to get details of this property request.",
+            );
+        }
+
+        return request;
     }
 }
 

@@ -63,8 +63,32 @@ const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getRequestDetails = catchAsync(async (req: Request, res: Response) => {
+    const requestId = req.params.id;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === "ADMIN";
+
+    if (!requestId) {
+        throw new Error("requestId is Required in params");
+    }
+
+    const result = await requestService.getRequestDetails(
+        requestId as string,
+        userId,
+        isAdmin,
+    );
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Rental request details retrived successfully",
+        data: result,
+    });
+});
+
 export const requestController = {
     createRequest,
     getRequestforLandLord,
     updateRequestStatus,
+    getRequestDetails,
 };

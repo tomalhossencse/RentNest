@@ -9,15 +9,23 @@ requestRoutes.post(
     auth("TENANT", "ADMIN"),
     requestController.createRequest,
 );
+
 requestRoutes.get(
     "/landlord",
     auth("LANDLORD", "ADMIN"),
     requestController.getRequestforLandLord,
 );
-requestRoutes.put(
+
+requestRoutes.patch(
     "/:id/landlord",
     auth("LANDLORD", "ADMIN"),
     requestController.updateRequestStatus,
+);
+
+requestRoutes.get(
+    "/:id",
+    auth("TENANT", "LANDLORD", "ADMIN"),
+    requestController.getRequestDetails,
 );
 
 export default requestRoutes;
