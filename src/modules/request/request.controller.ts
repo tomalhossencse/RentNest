@@ -86,9 +86,21 @@ const getRequestDetails = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getRequestforTenant = catchAsync(async (req: Request, res: Response) => {
+    const tenantId = req.user.id;
+    const result = await requestService.getRequestforTenant(tenantId);
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Tenent Rental request Retrived successfully",
+        data: result,
+    });
+});
+
 export const requestController = {
     createRequest,
     getRequestforLandLord,
     updateRequestStatus,
     getRequestDetails,
+    getRequestforTenant,
 };

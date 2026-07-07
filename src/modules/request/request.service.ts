@@ -118,6 +118,16 @@ class RequestService {
 
         return request;
     }
+
+    async getRequestforTenant(tenantId: string) {
+        const requests = await prisma.request.findMany({
+            where: {
+                tenantId,
+            },
+        });
+
+        return requests;
+    }
 }
 
 export default new RequestService();

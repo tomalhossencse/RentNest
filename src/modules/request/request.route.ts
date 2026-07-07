@@ -23,6 +23,12 @@ requestRoutes.patch(
 );
 
 requestRoutes.get(
+    "/tenant",
+    auth("TENANT", "ADMIN"),
+    requestController.getRequestforTenant,
+);
+
+requestRoutes.get(
     "/:id",
     auth("TENANT", "LANDLORD", "ADMIN"),
     requestController.getRequestDetails,
