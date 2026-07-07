@@ -83,3 +83,11 @@ export interface ICreateRequest {
     moveInDate: string;
     message?: string;
 }
+
+export const failedStatuses = [
+    "FAILED",
+    "INVALID_TRANSACTION",
+    "CANCELLED",
+    "UNATTEMPTED",
+    "EXPIRED",
+];

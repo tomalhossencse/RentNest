@@ -1,0 +1,21 @@
+model payment {
+    id String @id @default(uuid())
+
+    transactionId String? @unique
+    requestId     String  @unique
+    request       Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+    amount   Float
+    provider Providers     @default(SSLCOMMERZ)
+    method   String?
+    status   PaymentStatus @default(PENDING)
+    // payment details
+    meta     Json?
+
+    paidAt DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("paymenets")
+}

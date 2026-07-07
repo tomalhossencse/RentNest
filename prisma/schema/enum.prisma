@@ -95,5 +95,18 @@ enum Division {
 enum RequestStatus {
     PENDING
     APPROVED
+    PAID
     REJECTED
+    CANCELLED
+}
+
+enum Providers {
+    SSLCOMMERZ
+    STRIPE
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
 }
