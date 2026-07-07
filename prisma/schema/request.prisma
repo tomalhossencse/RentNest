@@ -1,0 +1,18 @@
+model Request {
+    id String @id @default(uuid())
+
+    propertyId String
+    property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+    tenantId String
+    tenant   User   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+    moveInDate DateTime
+    status     RequestStatus @default(PENDING)
+    message    String?
+    createdAt  DateTime      @default(now())
+    updatedAt  DateTime      @updatedAt
+
+    @@unique([propertyId, tenantId])
+    @@map("requests")
+}

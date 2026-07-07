@@ -7,6 +7,7 @@ model User {
     role     Role       @default(TENANT)
 
     properties Property[]
+    request    Request[]
 
     profilePhoto String?
     bio          String?

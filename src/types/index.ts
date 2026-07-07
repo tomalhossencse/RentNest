@@ -2,6 +2,7 @@ import {
     District,
     Division,
     PropertyStatus,
+    RequestStatus,
     Role,
 } from "../../generated/prisma/enums";
 import { PropertyWhereInput } from "../../generated/prisma/models";
@@ -65,4 +66,10 @@ export interface IPropertyQuery extends PropertyWhereInput {
     limit?: string;
     sortBy?: string;
     sortOrder?: string;
+}
+
+export interface ICreateRequest {
+    propertyId: string;
+    moveInDate: string;
+    message?: string;
 }

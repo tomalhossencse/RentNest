@@ -91,3 +91,9 @@ enum Division {
     RANGPUR
     MYMENSINGH
 }
+
+enum RequestStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
