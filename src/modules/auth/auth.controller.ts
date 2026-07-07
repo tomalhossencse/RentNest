@@ -100,10 +100,29 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+    const { status } = req.body;
+    const userId = req.params.id;
+
+    if (!status || !userId) {
+        throw new Error("Please provide status in body and userId in Params");
+    }
+
+    const result = await authService.updateUser(userId as string, status);
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "user updated successfully",
+        data: result,
+    });
+});
+
 export const authController = {
     registerUser,
     loginUser,
     getCurrentUser,
     refreshToken,
     getAllUsers,
+    updateUser,
 };

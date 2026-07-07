@@ -3,6 +3,7 @@ import { ILoginPayload, IResisterPayload, JwtPayload } from "../../types";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { signToken, verifyToken } from "../../utils/jwt";
+import { UserStatus } from "../../../generated/prisma/enums";
 
 class AuthService {
     private async hashPassword(password: string) {
@@ -148,6 +149,38 @@ class AuthService {
             },
         });
         return users;
+    }
+
+    async updateUser(userId: string, status: UserStatus) {
+        const user = await prisma.user.findUniqueOrThrow({
+            where: {
+                id: userId,
+            },
+        });
+
+        if (!user) {
+            throw new Error("User with this userId not exists");
+        }
+
+        if (user?.status === status) {
+            throw new Error(
+                `Your provided status (${status}) is already up to date.`,
+            );
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                status,
+            },
+            omit: {
+                password: true,
+            },
+        });
+
+        return updatedUser;
     }
 }
 
