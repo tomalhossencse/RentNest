@@ -1,9 +1,11 @@
+import { Select } from "@prisma/client/runtime/client";
 import {
     District,
     Division,
     PropertyStatus,
     RequestStatus,
     Role,
+    UserStatus,
 } from "../../generated/prisma/enums";
 import {
     PropertyWhereInput,
@@ -61,6 +63,13 @@ export interface IUpdatePropery {
     floor?: number;
     image?: string;
     availableFrom?: string;
+}
+export interface IUpdateUserStatus {
+    status: UserStatus;
+}
+
+export interface IUpdateRequestStaus {
+    status: Select<RequestStatus, "APPROVED" | "REJECTED">;
 }
 export type IUpdateProperyStatus = Exclude<PropertyStatus, "RENTED">;
 

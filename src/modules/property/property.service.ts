@@ -218,11 +218,7 @@ class PropertyService {
         return updatedproperty;
     }
 
-    async deleteProperty(
-        propertyId: string,
-        landlordId: string,
-        isAdmin: Boolean,
-    ) {
+    async deleteProperty(propertyId: string, landlordId: string) {
         const property = await prisma.property.findUnique({
             where: {
                 id: propertyId,
@@ -233,7 +229,7 @@ class PropertyService {
             throw new Error("This Propery is not Exits");
         }
 
-        if (!isAdmin && landlordId !== property.landlordId) {
+        if (landlordId !== property.landlordId) {
             throw new Error("You are not the ower of this Property");
         }
         const deletedproperty = await prisma.property.delete({
@@ -263,7 +259,6 @@ class PropertyService {
     async updatePropertyStatus(
         propertyId: string,
         landlordId: string,
-        isAdmin: Boolean,
         status: IUpdateProperyStatus,
     ) {
         const property = await prisma.property.findUnique({
@@ -285,7 +280,7 @@ class PropertyService {
                 `Your provided status (${status}) is already up to date.`,
             );
         }
-        if (!isAdmin && landlordId !== property.landlordId) {
+        if (landlordId !== property.landlordId) {
             throw new Error("You are not the ower of this Property");
         }
         const updatedproperty = await prisma.property.update({

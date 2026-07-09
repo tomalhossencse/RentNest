@@ -30,7 +30,6 @@ class RequestService {
     async updateRequestStatus(
         requestId: string,
         landlordId: string,
-        isAdmin: boolean,
         status: RequestStatus,
     ) {
         const request = await prisma.request.findUnique({
@@ -42,7 +41,7 @@ class RequestService {
             },
         });
 
-        if (!isAdmin && request?.property.landlordId !== landlordId) {
+        if (request?.property.landlordId !== landlordId) {
             throw new Error(
                 "You are not authorized to manage this property request.",
             );

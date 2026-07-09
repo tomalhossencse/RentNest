@@ -4,23 +4,11 @@ import { paymentCotroller } from "./payment.controller";
 
 const paymentRoutes = Router();
 
-paymentRoutes.post(
-    "/create",
-    auth("TENANT", "ADMIN"),
-    paymentCotroller.initiatePayment,
-);
+paymentRoutes.post("/create", auth("TENANT"), paymentCotroller.initiatePayment);
 paymentRoutes.post("/confirm", paymentCotroller.verifyPayment);
 
-paymentRoutes.get(
-    "/",
-    auth("TENANT", "ADMIN"),
-    paymentCotroller.getTenantPayments,
-);
+paymentRoutes.get("/", auth("TENANT"), paymentCotroller.getTenantPayments);
 
-paymentRoutes.get(
-    "/:id",
-    auth("TENANT", "ADMIN"),
-    paymentCotroller.getPaymentsDetails,
-);
+paymentRoutes.get("/:id", auth("TENANT"), paymentCotroller.getPaymentsDetails);
 
 export default paymentRoutes;

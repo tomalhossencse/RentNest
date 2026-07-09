@@ -1,0 +1,695 @@
+{
+  "info": {
+    "_postman_id": "7cc33d15-c16e-439a-9b82-3f0b81fe317f",
+    "name": "RentNest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49691439"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\" : \"Tenant3\",\r\n \"email\" : \"tenant3@gmail.com\",\r\n  \"password\" : \"123456\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\" : \"tenant@gmail.com\",\r\n  \"password\" : \"123456\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get current user",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refreshToken",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\" : \"tenet@gmail.com\",\r\n  \"password\" : \"123456\"\r\n  }"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/refresh-token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all usres",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "update user status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n \"status\" : \"ACTIVE\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/users/228b6ee6-fa27-4963-81e5-b5a841bee366",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "users",
+                "228b6ee6-fa27-4963-81e5-b5a841bee366"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "category",
+      "item": [
+        {
+          "name": "create category",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"Room\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/categories",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/categories",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "item": [
+        {
+          "name": "add property",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": " {\r\n   \"title\": \"Comfortable Family House\",\r\n        \"description\": \"A peaceful family home in a quiet residential neighborhood with nearby schools and parks.\",\r\n        \"monthlyRent\": 24000,\r\n        \"division\": \"DHAKA\",\r\n        \"district\": \"TANGAIL\",\r\n        \"address\": \"Motora, Tangail\",\r\n        \"landlordId\": \"228b6ee6-fa27-4963-81e5-b5a841bee366\",\r\n        \"categoryId\": \"cmr9eix040002gwmhvse8esv1\",\r\n        \"status\": \"AVAILABLE\",\r\n        \"floor\": 2,\r\n    \"availableFrom\": \"2026-08-12T00:00:00.000Z\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/properties",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "properties"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all property",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/properties?sortBy=title&sortOrder=asc&page=1&limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "properties"
+              ],
+              "query": [
+                {
+                  "key": "division",
+                  "value": "DHAKA",
+                  "disabled": true
+                },
+                {
+                  "key": "searchTerm",
+                  "value": "gazipur",
+                  "disabled": true
+                },
+                {
+                  "key": "district",
+                  "value": "GAZIPUR",
+                  "disabled": true
+                },
+                {
+                  "key": "landlordId",
+                  "value": "3b109ac7-026f-49f3-8fa2-26515bad5506",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "House",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "title"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get property details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/properties/b063b20f-973d-492b-a072-ddbbec0101e7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "properties",
+                "b063b20f-973d-492b-a072-ddbbec0101e7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update property",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\" : \"Comfortable Family House\",\r\n    \"division\": \"DHAKA\",\r\n    \"district\": \"TANGAIL\",\r\n    \"address\": \"Motora, Tangail\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/properties/b063b20f-973d-492b-a072-ddbbec0101e7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "properties",
+                "b063b20f-973d-492b-a072-ddbbec0101e7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete property",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\" : \"Comfortable Family House\",\r\n    \"division\": \"DHAKA\",\r\n    \"district\": \"GAZIPUR\",\r\n    \"address\": \"Konabari, Gazipur\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/properties/b063b20f-973d-492b-a072-ddbbec0101e7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "properties",
+                "b063b20f-973d-492b-a072-ddbbec0101e7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update property status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\" : \"AVAILABLE\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/properties/status/ffb0c543-736b-4ee9-9f12-12f59050efd1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "properties",
+                "status",
+                "ffb0c543-736b-4ee9-9f12-12f59050efd1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "rentalRequest",
+      "item": [
+        {
+          "name": "create rental request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "  {\r\n    \"propertyId\": \"PROPERTY_ID_1\",\r\n    \"moveInDate\": \"2026-08-01T00:00:00.000Z\",\r\n    \"message\": \"I'm interested in renting this apartment for my family.\"\r\n  },",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/requests/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "requests",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all rental request for landlord",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/requests/landlord",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "requests",
+                "landlord"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update rental request status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\" : \"APPROVED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/requests/d6aa84c5-d935-4be3-9b89-992bc94e1a0e/landlord",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "requests",
+                "d6aa84c5-d935-4be3-9b89-992bc94e1a0e",
+                "landlord"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get request details",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "get rental Request of tenant",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "get all request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/requests?page=1&limit=4&status=APPROVED",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "requests"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "4"
+                },
+                {
+                  "key": "status",
+                  "value": "APPROVED"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "payment",
+      "item": [
+        {
+          "name": "create payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"requestId\" :  \"19d810f6-a981-49bf-88f1-0c1e44d699f5\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/payments/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "payments",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all payments for tanents",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "get payment details",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "review",
+      "item": [
+        {
+          "name": "create review",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "get tenant reviews",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "rental",
+      "item": [
+        {
+          "name": "get rental history",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

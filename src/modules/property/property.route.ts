@@ -4,26 +4,18 @@ import { auth } from "../../middlewares/auth";
 
 const propertyRoutes = Router();
 
-propertyRoutes.post(
-    "/",
-    auth("LANDLORD", "ADMIN"),
-    propertyController.addProperty,
-);
+propertyRoutes.post("/", auth("LANDLORD"), propertyController.addProperty);
 propertyRoutes.get("/", propertyController.getAllPropery);
 propertyRoutes.get("/:id", propertyController.getProperyDetails);
-propertyRoutes.put(
-    "/:id",
-    auth("LANDLORD", "ADMIN"),
-    propertyController.updateProperty,
-);
+propertyRoutes.put("/:id", auth("LANDLORD"), propertyController.updateProperty);
 propertyRoutes.patch(
     "/status/:id",
-    auth("LANDLORD", "ADMIN"),
+    auth("LANDLORD"),
     propertyController.updatePropertyStatus,
 );
 propertyRoutes.delete(
     "/:id",
-    auth("LANDLORD", "ADMIN"),
+    auth("LANDLORD"),
     propertyController.deleteProperty,
 );
 

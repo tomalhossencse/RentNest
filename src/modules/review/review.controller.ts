@@ -7,15 +7,17 @@ import reviewService from "./review.service";
 
 const createReview = catchAsync(async (req: Request, res: Response) => {
     const payload = req.body;
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
     const { rentalId, rating } = payload as ICreateReview;
     const tenantId = req.user.id;
-    const isAdmin = req.user.role === "ADMIN";
 
     if (!rating || !rentalId) {
         throw new Error("Please enter rentalId and rating");
     }
 
-    const result = await reviewService.createReview(tenantId, isAdmin, payload);
+    const result = await reviewService.createReview(tenantId, payload);
 
     sendResponse(res, {
         success: true,
@@ -25,4 +27,16 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-export const reviewController = { createReview };
+const getReviews = catchAsync(async (req: Request, res: Response) => {
+    const landlordId = req.user.id;
+    const result = await reviewService.getReviews(landlordId);
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Get tenant reviews successfully",
+        data: result,
+    });
+});
+
+export const reviewController = { createReview, getReviews };

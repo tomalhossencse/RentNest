@@ -1,4 +1,4 @@
-import { ICreateRequest } from "../../types";
+import { ICreateRequest, IUpdateRequestStaus } from "../../types";
 import { catchAsync } from "../../utils/catchAsync";
 import { Request, Response } from "express";
 import requestService from "./request.service";
@@ -7,6 +7,10 @@ import httpStatus from "http-status";
 
 const createRequest = catchAsync(async (req: Request, res: Response) => {
     const payload = req.body;
+
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
     const tenantId = req.user.id;
 
     const { moveInDate, propertyId } = payload as ICreateRequest;
@@ -42,17 +46,25 @@ const getRequestforLandLord = catchAsync(
 const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
     const requestId = req.params.id;
     const landlordId = req.user.id;
-    const isAdmin = req.user.role === "ADMIN";
-    const { status } = req.body;
+    const payload = req.body;
+
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
+
+    const { status } = payload as IUpdateRequestStaus;
 
     if (!requestId || !status) {
         throw new Error("Please provide requestId and status");
     }
 
+    if (status !== "APPROVED" && status !== "REJECTED") {
+        throw new Error("Please provide status (APPROVED / REJECTED)");
+    }
+
     const result = await requestService.updateRequestStatus(
         requestId as string,
         landlordId,
-        isAdmin,
         status,
     );
     sendResponse(res, {

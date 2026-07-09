@@ -7,6 +7,9 @@ import httpStatus from "http-status";
 
 const createCategory = catchAsync(async (req: Request, res: Response) => {
     const payload = req.body;
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
     const { name } = payload as ICreateCategory;
 
     if (!name) {

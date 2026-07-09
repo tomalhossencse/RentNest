@@ -6,8 +6,15 @@ import httpStatus from "http-status";
 import config from "../../config";
 
 const initiatePayment = catchAsync(async (req: Request, res: Response) => {
-    const { requestId } = req.body;
+    const payload = req.body;
+
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
+
+    const { requestId } = payload;
     const user = req.user;
+
     if (!requestId) {
         throw new Error("Please provide requestId in body");
     }
@@ -16,8 +23,8 @@ const initiatePayment = catchAsync(async (req: Request, res: Response) => {
 
     sendResponse(res, {
         success: true,
-        status: httpStatus.OK,
-        message: "Payment gatewayPageURL Retrived successfully",
+        status: httpStatus.CREATED,
+        message: "Payment gatewayPageURL created successfully",
         data: { gatewayPageURL, transactionId },
     });
 });
@@ -61,8 +68,6 @@ const getTenantPayments = catchAsync(async (req: Request, res: Response) => {
 const getPaymentsDetails = catchAsync(async (req: Request, res: Response) => {
     const trxId = req.params.id;
     const tenantId = req.user.id;
-    const isAdmin = req.user.role === "ADMIN";
-
     if (!trxId) {
         throw new Error("TransactionId required in params");
     }
@@ -70,7 +75,6 @@ const getPaymentsDetails = catchAsync(async (req: Request, res: Response) => {
     const result = await paymentService.getPaymentDetails(
         trxId as string,
         tenantId,
-        isAdmin,
     );
 
     sendResponse(res, {

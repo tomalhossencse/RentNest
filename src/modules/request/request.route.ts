@@ -4,27 +4,23 @@ import { auth } from "../../middlewares/auth";
 
 const requestRoutes = Router();
 
-requestRoutes.post(
-    "/",
-    auth("TENANT", "ADMIN"),
-    requestController.createRequest,
-);
+requestRoutes.post("/", auth("TENANT"), requestController.createRequest);
 
 requestRoutes.get(
     "/landlord",
-    auth("LANDLORD", "ADMIN"),
+    auth("LANDLORD"),
     requestController.getRequestforLandLord,
 );
 
 requestRoutes.patch(
     "/landlord/:id",
-    auth("LANDLORD", "ADMIN"),
+    auth("LANDLORD"),
     requestController.updateRequestStatus,
 );
 
 requestRoutes.get(
     "/tenant",
-    auth("TENANT", "ADMIN"),
+    auth("TENANT"),
     requestController.getRequestForTenant,
 );
 

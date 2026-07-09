@@ -239,7 +239,7 @@ class Payment {
         return result;
     }
 
-    async getPaymentDetails(trxId: string, tenantId: string, isAdmin: boolean) {
+    async getPaymentDetails(trxId: string, tenantId: string) {
         const paymentDetails = await prisma.payment.findUnique({
             where: {
                 transactionId: trxId,
@@ -249,7 +249,7 @@ class Payment {
             },
         });
 
-        if (!isAdmin && paymentDetails?.userId !== tenantId) {
+        if (paymentDetails?.userId !== tenantId) {
             throw new Error(
                 "You are not authorized  for this payment details.",
             );

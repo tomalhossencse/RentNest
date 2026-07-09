@@ -4,10 +4,6 @@ import { rentalController } from "./rental.controller";
 
 const rentalRoutes = Router();
 
-rentalRoutes.get(
-    "/",
-    auth("LANDLORD", "ADMIN"),
-    rentalController.getRentalHistory,
-);
+rentalRoutes.get("/", auth("LANDLORD"), rentalController.getRentalHistory);
 
 export default rentalRoutes;

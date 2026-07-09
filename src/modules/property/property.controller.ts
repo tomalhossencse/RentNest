@@ -107,7 +107,6 @@ const updateProperty = catchAsync(async (req: Request, res: Response) => {
 const deleteProperty = catchAsync(async (req: Request, res: Response) => {
     const propertyId = req.params.id;
     const landlordId = req.user.id;
-    const isAdmin = req.user.role === "ADMIN";
 
     if (!propertyId) {
         throw new Error("Please enter the propetyId in params");
@@ -116,7 +115,6 @@ const deleteProperty = catchAsync(async (req: Request, res: Response) => {
     const result = await propertyService.deleteProperty(
         propertyId as string,
         landlordId,
-        isAdmin,
     );
 
     sendResponse(res, {
@@ -131,7 +129,6 @@ const updatePropertyStatus = catchAsync(async (req: Request, res: Response) => {
     const status = req.body?.status as IUpdateProperyStatus;
     const propertyId = req.params.id;
     const landlordId = req.user.id;
-    const isAdmin = req.user.role === "ADMIN";
 
     if (!status || !propertyId) {
         throw new Error(
@@ -146,7 +143,6 @@ const updatePropertyStatus = catchAsync(async (req: Request, res: Response) => {
     const result = await propertyService.updatePropertyStatus(
         propertyId as string,
         landlordId,
-        isAdmin,
         status,
     );
 

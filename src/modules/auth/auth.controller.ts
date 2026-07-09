@@ -1,16 +1,32 @@
 import { Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
-import { ILoginPayload, IResisterPayload } from "../../types";
+import {
+    ILoginPayload,
+    IResisterPayload,
+    IUpdateUserStatus,
+} from "../../types";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
-import { send } from "node:process";
 import authService from "./auth.service";
+import { UserStatus } from "../../../generated/prisma/enums";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
-    const { email, name, password } = req.body as IResisterPayload;
+    const payload = req.body;
+
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
+
+    const { email, name, password, role } = payload as IResisterPayload;
 
     if (!email || !name || !password) {
-        throw new Error("Please Provide your email, password and name!");
+        throw new Error(
+            "Please provide your email, password and name as payload!",
+        );
+    }
+
+    if (role && role !== "LANDLORD" && role !== "TENANT") {
+        throw new Error("Please provide user role as (LANDLORD / TENANT)");
     }
 
     const result = await authService.createUserIntoDB(req.body);
@@ -24,7 +40,13 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
-    const { email, password } = req.body as ILoginPayload;
+    const payload = req.body;
+
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
+
+    const { email, password } = payload as ILoginPayload;
 
     if (!email || !password) {
         throw new Error("Please Provide your email and password !");
@@ -101,7 +123,19 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateUser = catchAsync(async (req: Request, res: Response) => {
-    const { status } = req.body;
+    const payload = req.body;
+    if (!payload) {
+        throw new Error("Please provide payload!");
+    }
+    const { status } = payload as IUpdateUserStatus;
+
+    if (!status) {
+        throw new Error("Please provide status in Payload!");
+    }
+
+    if (status !== "ACTIVE" && status !== "BLOCKED") {
+        throw new Error("Please provide status (ACTIVE / BLOCKED)");
+    }
     const userId = req.params.id;
 
     if (!status || !userId) {
