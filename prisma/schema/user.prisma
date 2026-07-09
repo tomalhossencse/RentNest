@@ -7,13 +7,16 @@ model User {
     role     Role       @default(TENANT)
 
     properties Property[]
-    request    Request[]
+    requests   Request[]
+    payments   Payment[]
+    rentals    Rental[]
 
     profilePhoto String?
     bio          String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    reviews   Review[]
 
     @@map("users")
 }

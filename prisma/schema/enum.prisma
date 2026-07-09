@@ -95,9 +95,9 @@ enum Division {
 enum RequestStatus {
     PENDING
     APPROVED
-    PAID
     REJECTED
     CANCELLED
+    PAID
 }
 
 enum Providers {
@@ -109,4 +109,10 @@ enum PaymentStatus {
     PENDING
     COMPLETED
     FAILED
+}
+
+enum RentalStatus {
+    ACTIVE
+    ENDED
+    TERMINATED
 }

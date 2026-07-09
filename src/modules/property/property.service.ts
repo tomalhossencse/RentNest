@@ -1,4 +1,3 @@
-import { District } from "../../../generated/prisma/enums";
 import { PropertyWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import { ICreatePropery, IPropertyQuery, IUpdatePropery } from "../../types";
@@ -15,7 +14,7 @@ class PropertyService {
         return result;
     }
 
-    async getALlProperty(query: IPropertyQuery) {
+    async getAllProperty(query: IPropertyQuery) {
         const limit = query.limit ? Number(query.limit) : 5;
         const page = query.page ? Number(query.page) : 1;
         const skip = (page - 1) * limit;
@@ -93,7 +92,7 @@ class PropertyService {
                 categoryId: true,
             },
             include: {
-                lanlord: {
+                landlord: {
                     select: {
                         name: true,
                         email: true,
@@ -130,7 +129,7 @@ class PropertyService {
                 id: propertyId,
             },
             include: {
-                lanlord: {
+                landlord: {
                     select: {
                         id: true,
                         name: true,
@@ -178,7 +177,7 @@ class PropertyService {
             },
             data: updatedpayload,
             include: {
-                lanlord: {
+                landlord: {
                     select: {
                         id: true,
                         name: true,
@@ -219,7 +218,7 @@ class PropertyService {
                 id: propertyId,
             },
             include: {
-                lanlord: {
+                landlord: {
                     select: {
                         id: true,
                         name: true,

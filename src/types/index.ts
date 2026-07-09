@@ -84,10 +84,8 @@ export interface ICreateRequest {
     message?: string;
 }
 
-export const failedStatuses = [
-    "FAILED",
-    "INVALID_TRANSACTION",
-    "CANCELLED",
-    "UNATTEMPTED",
-    "EXPIRED",
-];
+export interface ICreateReview {
+    rentalId: string;
+    rating: number;
+    comment?: string;
+}

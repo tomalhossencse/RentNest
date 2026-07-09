@@ -4,7 +4,7 @@ export interface SSLCommerzInitPayload {
     // Required
     store_id: string;
     store_passwd: string;
-    total_amount: number;
+    total_amount: Decimal;
     currency: string;
     tran_id: string;
 
@@ -56,3 +56,10 @@ export interface SSLCommerzInitPayload {
     value_c?: string;
     value_d?: string;
 }
+export const failedStatus = [
+    "FAILED",
+    "INVALID_TRANSACTION",
+    "CANCELLED",
+    "UNATTEMPTED",
+    "EXPIRED",
+];

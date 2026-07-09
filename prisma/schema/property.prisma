@@ -3,7 +3,7 @@ model Property {
 
     title       String   @db.VarChar(255)
     description String?
-    monthlyRent Float
+    monthlyRent Decimal  @db.Decimal(10, 2)
     division    Division
     district    District
     address     String   @db.VarChar(255)
@@ -11,11 +11,14 @@ model Property {
     // forign key
     landlordId String
     categoryId String
-    request    Request[]
-    // reference
-    lanlord    User      @relation(fields: [landlordId], references: [id], onDelete: Cascade)
-    category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
+    // reference
+    landlord User     @relation(fields: [landlordId], references: [id], onDelete: Cascade)
+    category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+    requests Request[]
+
+    reviews       Review[]
     status        PropertyStatus
     floor         Int
     image         String?

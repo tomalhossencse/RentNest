@@ -7,14 +7,16 @@ model Request {
     tenantId String
     tenant   User   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-    payment payment?
-
     moveInDate DateTime
     status     RequestStatus @default(PENDING)
     message    String?
     createdAt  DateTime      @default(now())
     updatedAt  DateTime      @updatedAt
+    rental     Rental?
+    payment    Payment?
 
     @@unique([propertyId, tenantId])
+    @@index([tenantId])
+    @@index([propertyId])
     @@map("requests")
 }

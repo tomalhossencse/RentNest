@@ -1,11 +1,13 @@
-model payment {
+model Payment {
     id String @id @default(uuid())
 
     transactionId String? @unique
     requestId     String  @unique
     request       Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+    userId        String
+    user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    amount   Float
+    amount   Decimal       @db.Decimal(10, 2)
     provider Providers     @default(SSLCOMMERZ)
     method   String?
     status   PaymentStatus @default(PENDING)

@@ -17,7 +17,7 @@ requestRoutes.get(
 );
 
 requestRoutes.patch(
-    "/:id/landlord",
+    "/landlord/:id",
     auth("LANDLORD", "ADMIN"),
     requestController.updateRequestStatus,
 );

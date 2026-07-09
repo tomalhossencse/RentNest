@@ -90,7 +90,7 @@ class RequestService {
                         title: true,
                         division: true,
                         district: true,
-                        lanlord: {
+                        landlord: {
                             select: {
                                 id: true,
                                 name: true,
@@ -110,7 +110,7 @@ class RequestService {
         if (
             !isAdmin &&
             request?.tenantId !== userId &&
-            request?.property.lanlord.id !== userId
+            request?.property.landlord.id !== userId
         ) {
             throw new Error(
                 "You are not authorized to get details of this property request.",

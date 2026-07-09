@@ -2,7 +2,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { Request, Response } from "express";
 import paymentService from "./payment.service";
 import { sendResponse } from "../../utils/sendResponse";
-import httpStatus, { status } from "http-status";
+import httpStatus from "http-status";
 import config from "../../config";
 
 const initiatePayment = catchAsync(async (req: Request, res: Response) => {
@@ -11,16 +11,14 @@ const initiatePayment = catchAsync(async (req: Request, res: Response) => {
     if (!requestId) {
         throw new Error("Please provide requestId in body");
     }
-    const gatewayPageURL = await paymentService.initiatePayment(
-        requestId,
-        user,
-    );
+    const { gatewayPageURL, transactionId } =
+        await paymentService.initiatePayment(requestId, user);
 
     sendResponse(res, {
         success: true,
         status: httpStatus.OK,
         message: "Payment gatewayPageURL Retrived successfully",
-        data: { gatewayPageURL },
+        data: { gatewayPageURL, transactionId },
     });
 });
 
@@ -39,7 +37,7 @@ const verifyPayment = catchAsync(async (req: Request, res: Response) => {
 
     if (result.success) {
         return res.redirect(
-            `${config.client_url}/payment/success?requestId=${requestId}`,
+            `${config.client_url}/payment/success?requestId=${requestId}&trxId=${trxId}`,
         );
     }
 
@@ -48,7 +46,44 @@ const verifyPayment = catchAsync(async (req: Request, res: Response) => {
     );
 });
 
+const getTenantPayments = catchAsync(async (req: Request, res: Response) => {
+    const tenantId = req.user.id;
+    const result = await paymentService.getTenantPayments(tenantId);
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Tenant's payment history retrived successfully",
+        data: result,
+    });
+});
+
+const getPaymentsDetails = catchAsync(async (req: Request, res: Response) => {
+    const trxId = req.params.id;
+    const tenantId = req.user.id;
+    const isAdmin = req.user.role === "ADMIN";
+
+    if (!trxId) {
+        throw new Error("TransactionId required in params");
+    }
+
+    const result = await paymentService.getPaymentDetails(
+        trxId as string,
+        tenantId,
+        isAdmin,
+    );
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Payment details Retrived  successfully",
+        data: result,
+    });
+});
+
 export const paymentCotroller = {
     initiatePayment,
     verifyPayment,
+    getTenantPayments,
+    getPaymentsDetails,
 };
