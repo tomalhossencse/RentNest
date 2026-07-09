@@ -10,6 +10,7 @@ import propertyRoutes from "./modules/property/property.route";
 import requestRoutes from "./modules/request/request.route";
 import paymentRoutes from "./modules/payment/payment.route";
 import reviewRoutes from "./modules/review/review.route";
+import rentalRoutes from "./modules/rental/rental.route";
 
 const app: Application = express();
 
@@ -34,6 +35,7 @@ app.use("/api/properties", propertyRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/rentals", rentalRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);

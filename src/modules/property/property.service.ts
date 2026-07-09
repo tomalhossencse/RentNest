@@ -1,6 +1,11 @@
 import { PropertyWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
-import { ICreatePropery, IPropertyQuery, IUpdatePropery } from "../../types";
+import {
+    ICreatePropery,
+    IPropertyQuery,
+    IUpdatePropery,
+    IUpdateProperyStatus,
+} from "../../types";
 
 class PropertyService {
     async addProperty(payload: ICreatePropery, landlordId: string) {
@@ -75,6 +80,21 @@ class PropertyService {
             });
         }
 
+        if (query.minRent) {
+            andConditions.push({
+                monthlyRent: {
+                    gte: Number(query.minRent),
+                },
+            });
+        }
+        if (query.maxRent) {
+            andConditions.push({
+                monthlyRent: {
+                    lte: Number(query.maxRent),
+                },
+            });
+        }
+
         const properties = await prisma.property.findMany({
             where: {
                 AND: andConditions,
@@ -94,12 +114,14 @@ class PropertyService {
             include: {
                 landlord: {
                     select: {
+                        id: true,
                         name: true,
                         email: true,
                     },
                 },
                 category: {
                     select: {
+                        id: true,
                         name: true,
                     },
                 },
@@ -195,6 +217,7 @@ class PropertyService {
 
         return updatedproperty;
     }
+
     async deleteProperty(
         propertyId: string,
         landlordId: string,
@@ -235,6 +258,59 @@ class PropertyService {
         });
 
         return deletedproperty;
+    }
+
+    async updatePropertyStatus(
+        propertyId: string,
+        landlordId: string,
+        isAdmin: Boolean,
+        status: IUpdateProperyStatus,
+    ) {
+        const property = await prisma.property.findUnique({
+            where: {
+                id: propertyId,
+            },
+        });
+
+        if (!property) {
+            throw new Error("This Propery is not Exits");
+        }
+
+        if (property?.status === "RENTED") {
+            throw new Error("This propery is already rented");
+        }
+
+        if (property?.status === status) {
+            throw new Error(
+                `Your provided status (${status}) is already up to date.`,
+            );
+        }
+        if (!isAdmin && landlordId !== property.landlordId) {
+            throw new Error("You are not the ower of this Property");
+        }
+        const updatedproperty = await prisma.property.update({
+            where: {
+                id: propertyId,
+            },
+            data: { status },
+            include: {
+                landlord: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
+
+        return updatedproperty;
     }
 }
 

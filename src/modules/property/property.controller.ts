@@ -2,8 +2,9 @@ import { catchAsync } from "../../utils/catchAsync";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import propertyService from "./property.service";
-import { ICreatePropery } from "../../types";
+import { ICreatePropery, IUpdateProperyStatus } from "../../types";
 import { sendResponse } from "../../utils/sendResponse";
+import { IntFieldUpdateOperationsInput } from "../../../generated/prisma/models";
 
 const addProperty = catchAsync(async (req: Request, res: Response) => {
     const payload = req.body;
@@ -102,6 +103,7 @@ const updateProperty = catchAsync(async (req: Request, res: Response) => {
         data: result,
     });
 });
+
 const deleteProperty = catchAsync(async (req: Request, res: Response) => {
     const propertyId = req.params.id;
     const landlordId = req.user.id;
@@ -125,10 +127,42 @@ const deleteProperty = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const updatePropertyStatus = catchAsync(async (req: Request, res: Response) => {
+    const status = req.body?.status as IUpdateProperyStatus;
+    const propertyId = req.params.id;
+    const landlordId = req.user.id;
+    const isAdmin = req.user.role === "ADMIN";
+
+    if (!status || !propertyId) {
+        throw new Error(
+            "Please provide status in body and propetyId in params",
+        );
+    }
+
+    if (status !== "AVAILABLE" && status !== "INACTIVE") {
+        throw new Error("Please provide valide status(AVAILABLE / INACTIVE)");
+    }
+
+    const result = await propertyService.updatePropertyStatus(
+        propertyId as string,
+        landlordId,
+        isAdmin,
+        status,
+    );
+
+    sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: "Property status updated successfully",
+        data: result,
+    });
+});
+
 export const propertyController = {
     addProperty,
     getAllPropery,
     getProperyDetails,
     updateProperty,
     deleteProperty,
+    updatePropertyStatus,
 };

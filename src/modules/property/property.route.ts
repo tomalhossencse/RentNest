@@ -16,6 +16,11 @@ propertyRoutes.put(
     auth("LANDLORD", "ADMIN"),
     propertyController.updateProperty,
 );
+propertyRoutes.patch(
+    "/status/:id",
+    auth("LANDLORD", "ADMIN"),
+    propertyController.updatePropertyStatus,
+);
 propertyRoutes.delete(
     "/:id",
     auth("LANDLORD", "ADMIN"),

@@ -12,6 +12,7 @@ enum Role {
 enum PropertyStatus {
     AVAILABLE
     RENTED
+    INACTIVE
 }
 
 enum District {

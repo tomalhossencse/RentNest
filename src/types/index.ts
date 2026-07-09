@@ -62,6 +62,7 @@ export interface IUpdatePropery {
     image?: string;
     availableFrom?: string;
 }
+export type IUpdateProperyStatus = Exclude<PropertyStatus, "RENTED">;
 
 export interface IPropertyQuery extends PropertyWhereInput {
     searchTerm?: string;
@@ -69,6 +70,8 @@ export interface IPropertyQuery extends PropertyWhereInput {
     limit?: string;
     sortBy?: string;
     sortOrder?: string;
+    minRent?: string;
+    maxRent?: string;
 }
 
 export interface IReqeustQuery extends RequestWhereInput {
